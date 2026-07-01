@@ -496,6 +496,20 @@
       opacity: 0.8;
     }
 
+    .reserve__widget {
+      max-width: 580px;
+      margin: 0 auto;
+      background: #fff;
+    }
+
+    .reserve__iframe {
+      display: block;
+      width: 100%;
+      min-height: 600px;
+      border: 0;
+      background: #fff;
+    }
+
     .btn {
       display: inline-block;
       font-size: 0.75rem;
@@ -753,10 +767,18 @@
       <h2 class="section-title">Boka ditt bord</h2>
       <p>
         Vi tar gärna emot dig för lunch, middag eller ett glas naturvin i baren.
-        Boka online, eller ring oss om du har frågor.
+        Välj datum och tid nedan.
       </p>
-      <a href="https://widget.dinnerplans.se/demokrogen" class="btn btn--filled">Boka bord</a>
-      <a href="tel:+4631123456" class="btn" style="margin-left: 1rem;">031-12 34 56</a>
+      <div class="reserve__widget">
+        <iframe
+          id="booking-widget"
+          class="reserve__iframe"
+          src="https://widget.dinnerplans.se/demokrogen"
+          title="Boka bord hos Demokrogen"
+          frameborder="0"
+          scrolling="no"
+        ></iframe>
+      </div>
     </div>
   </section>
 
@@ -807,6 +829,17 @@
 
       window.addEventListener("scroll", onScroll, { passive: true });
       update();
+
+      var bookingIframe = document.getElementById("booking-widget");
+      if (bookingIframe) {
+        window.addEventListener("message", function (e) {
+          if (e.origin !== "https://widget.dinnerplans.se") return;
+          var height = parseFloat(e.data);
+          if (!isNaN(height) && isFinite(height)) {
+            bookingIframe.style.height = height + "px";
+          }
+        });
+      }
     })();
   </script>
 </body>
